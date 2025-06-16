@@ -1,12 +1,13 @@
 // tailwind.config.js
 module.exports = {
-  content: [
+    darkMode: ["class"],
+    content: [
     "./app/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-   extend: {
+  	extend: {
   		colors: {
   			brand: {
   				'100': '#4B55B5',
@@ -70,7 +71,9 @@ module.exports = {
   			}
   		},
   		fontFamily: {
-  			poppins: ["var(--font-poppins)"]
+  			poppins: [
+  				'var(--font-poppins)'
+  			]
   		},
   		boxShadow: {
   			'drop-1': '0px 10px 30px 0px rgba(66, 71, 97, 0.1)',
@@ -95,7 +98,7 @@ module.exports = {
   		animation: {
   			'caret-blink': 'caret-blink 1.25s ease-out infinite'
   		}
-  	},
+  	}
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 }

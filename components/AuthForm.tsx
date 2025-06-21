@@ -19,7 +19,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { createAccount } from "@/lib/actions/user.actions";
+import { createAccount, signInUser } from "@/lib/actions/user.actions";
 import OTPModal from "./OTPModal";
 
 type FormType = "sign-in" | "sign-up";
@@ -50,10 +50,11 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
     try{
 
-      const user = await createAccount({
+      const user = type ==="sign-up" ?
+      await createAccount({
       fullName: values.fullName || '',
-      email: values.email
-      })
+      email: values.email, 
+     })  : await signInUser({email: values.email} )
 
       setAccountId(user.accountId);
 
@@ -69,6 +70,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
+
           <h1 className="form-title">
             {type === "sign-in" ? "Sign In" : "Sign Up"}
           </h1>
@@ -94,6 +96,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
               )}
             />
           )}
+
           <FormField
             control={form.control}
             name="email"
@@ -102,7 +105,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
                 <div className="shad-form-item">
                   <FormLabel className="shad-form-label">Email</FormLabel>
                   <FormControl>
-                    <Input
+                     <Input
                       placeholder="Enter your email"
                       className="shad-input"
                       {...field}

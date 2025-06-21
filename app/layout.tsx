@@ -10,7 +10,7 @@ const poppins = Poppins( {
 
 export const metadata: Metadata = {
   title: "SafeKeep",
-  description: "SakeKeep - The smarter way to store and share.",
+  description: "Safe-Keep: The smarter way to store and share.",
   icons: {
     icon: '/favicon.ico',
   },

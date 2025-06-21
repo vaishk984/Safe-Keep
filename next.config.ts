@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
       bodySizeLimit: "100MB",
-    }
+    },
   },
 
   images: {
@@ -19,10 +19,14 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "img.freepik.com"
-      }
-    ]
-  }
+        hostname: "img.freepik.com",
+      },
+      {
+        protocol: "https",
+        hostname: "fra.cloud.appwrite.io",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

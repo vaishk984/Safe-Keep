@@ -78,7 +78,12 @@ const Dashboard = async () => {
                 <div className="flex flex-col flex-1">
                   <div className="flex items-start justify-between flex-wrap sm:flex-nowrap gap-1">
                     <div>
-                      <p className="recent-file-name">{file.name}</p>
+                      <p
+                        className="recent-file-name w-full max-w-[180px] truncate sm:max-w-[300px]"
+                        title={file.name}
+                      >
+                        {file.name}
+                      </p>
                       <FormattedDateTime
                         date={file.$createdAt}
                         className="caption"

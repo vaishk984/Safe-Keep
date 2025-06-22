@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { Models } from "node-appwrite";
 import React from "react";
+
 import Thumbnail from "@/components/Thumbnail";
-import { convertFileSize } from "@/lib/utils";
 import FormattedDateTime from "./FormattedDateTime";
 import ActionsDropdown from "./ActionsDropdown";
+import { convertFileSize } from "@/lib/utils";
 
 const Card = ({ file }: { file: Models.Document }) => {
   return (
@@ -17,19 +18,24 @@ const Card = ({ file }: { file: Models.Document }) => {
           className="!size-20"
           imageClassName="!size-11"
         />
+
         <div className="flex flex-col items-end justify-between">
-          <ActionsDropdown file={file}/>
+          <ActionsDropdown file={file} />
           <p className="body-1">{convertFileSize(file.size)}</p>
         </div>
       </div>
 
-      <div className="file-caard-details">
+      <div className="file-card-details">
         <p className="subtitle-2 line-clamp-1">{file.name}</p>
+
         <FormattedDateTime
           date={file.$createdAt}
           className="body-2 text-light-200"
         />
-        <p className="caption line-clamp-1 text-light-200">By: {file.owner.fullName}</p>
+
+        <p className="caption line-clamp-1 text-light-200">
+          By: {file.owner?.fullName ?? "Unknown"}
+        </p>
       </div>
     </Link>
   );

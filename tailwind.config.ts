@@ -12,6 +12,7 @@ const config: Config = {
   		colors: {
   			brand: {
   				'100': '#4B55B5',
+				'200': '#FFFFFF',
   				DEFAULT: '#4D58BD'
   			},
   			red: '#4D58BD',
@@ -24,7 +25,7 @@ const config: Config = {
   				'100': '#333F4E',
   				'200': '#A3B2C7',
   				'300': '#F2F5F9',
-  				'400': '#F2F4F8'
+  				'400': '#F2F4F8',
   			},
   			dark: {
   				'100': '#04050C',

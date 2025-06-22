@@ -18,10 +18,12 @@ const Thumbnail = ({
   className,
 }: Props) => {
   const isImage = type === "image" && extension !== "svg";
+  const src = isImage ? url : getFileIcon(extension, type);
+
   return (
     <figure className={cn("thumbnail", className)}>
       <Image
-        src={isImage ? url : getFileIcon(extension, type)}
+        src={src}
         alt="thumbnail"
         width={100}
         height={100}
@@ -31,7 +33,6 @@ const Thumbnail = ({
           isImage && "thumbnail-image"
         )}
       />
-
     </figure>
   );
 };

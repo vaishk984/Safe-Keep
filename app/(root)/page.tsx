@@ -66,33 +66,28 @@ const Dashboard = async () => {
               <Link
                 href={file.url}
                 target="_blank"
-                className="flex items-center gap-3"
+                className="flex items-center justify-between gap-3 w-full"
                 key={file.$id}
               >
-                <Thumbnail
-                  type={file.type}
-                  extension={file.extension}
-                  url={file.url}
-                />
+                <div className="flex items-center gap-3 w-full">
+                  <Thumbnail
+                    type={file.type}
+                    extension={file.extension}
+                    url={file.url}
+                  />
 
-                <div className="flex flex-col flex-1">
-                  <div className="flex items-start justify-between flex-wrap sm:flex-nowrap gap-1">
-                    <div>
-                      <p
-                        className="recent-file-name w-full max-w-[180px] truncate sm:max-w-[300px]"
-                        title={file.name}
-                      >
-                        {file.name}
-                      </p>
-                      <FormattedDateTime
-                        date={file.$createdAt}
-                        className="caption"
-                      />
-                    </div>
-
-                    <ActionDropdown file={file} />
+                  <div className="flex flex-col w-full overflow-hidden">
+                    <p className="truncate text-sm font-medium max-w-[160px] sm:max-w-[220px]">
+                      {file.name}
+                    </p>
+                    <FormattedDateTime
+                      date={file.$createdAt}
+                      className="caption"
+                    />
                   </div>
                 </div>
+
+                <ActionDropdown file={file} />
               </Link>
             ))}
           </ul>

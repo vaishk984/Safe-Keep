@@ -11,23 +11,13 @@ import { getFiles, getTotalSpaceUsed } from "@/lib/actions/file.actions";
 import { convertFileSize, getUsageSummary } from "@/lib/utils";
 
 const Dashboard = async () => {
-  const [rawFiles, rawTotalSpace] = await Promise.all([
+  // Parallel requests
+  const [files, totalSpace] = await Promise.all([
     getFiles({ types: [], limit: 10 }),
     getTotalSpaceUsed(),
   ]);
 
-  // Fallback to avoid undefined crash
-  const files = rawFiles || { documents: [], total: 0 };
-  const totalSpace = rawTotalSpace || {
-    image: { size: 0, latestDate: "" },
-    document: { size: 0, latestDate: "" },
-    video: { size: 0, latestDate: "" },
-    audio: { size: 0, latestDate: "" },
-    other: { size: 0, latestDate: "" },
-    used: 0,
-    all: 2 * 1024 * 1024 * 1024,
-  };
-
+  // Get usage summary
   const usageSummary = getUsageSummary(totalSpace);
 
   return (
@@ -49,13 +39,14 @@ const Dashboard = async () => {
                     src={summary.icon}
                     width={100}
                     height={100}
-                    alt={`${summary.title} icon`}
+                    alt="uploaded image"
                     className="summary-type-icon"
                   />
                   <h4 className="summary-type-size">
                     {convertFileSize(summary.size) || 0}
                   </h4>
                 </div>
+
                 <h5 className="summary-type-title">{summary.title}</h5>
                 <Separator className="bg-light-400" />
                 <FormattedDateTime
@@ -85,6 +76,7 @@ const Dashboard = async () => {
                   extension={file.extension}
                   url={file.url}
                 />
+
                 <div className="recent-file-details">
                   <div className="flex flex-col gap-1">
                     <p className="recent-file-name">{file.name}</p>

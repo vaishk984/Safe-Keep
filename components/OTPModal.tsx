@@ -1,9 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,7 +8,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
 import {
@@ -20,50 +15,55 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-
-import { Button } from "./ui/button";
+import React, { useState } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 import { verifySecret, sendEmailOTP } from "@/lib/actions/user.actions";
+import { useRouter } from "next/navigation";
 
-interface OTPModalProps {
+const OtpModal = ({
+  accountId,
+  email,
+}: {
   accountId: string;
   email: string;
-}
-
-const OTPModal = ({ accountId, email }: OTPModalProps) => {
+}) => {
   const router = useRouter();
-
   const [isOpen, setIsOpen] = useState(true);
-  const [otp, setOtp] = useState("");
+  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsLoading(true);
 
+    console.log({ accountId, password });
+
     try {
-      const sessionId = await verifySecret({ accountId, password: otp });
+      const sessionId = await verifySecret({ accountId, password });
+
+      console.log({ sessionId });
+
       if (sessionId) router.push("/");
     } catch (error) {
-      console.error("OTP verification failed:", error);
+      console.log("Failed to verify OTP", error);
     }
 
     setIsLoading(false);
   };
 
-  const handleResendOTP = async () => {
+  const handleResendOtp = async () => {
     await sendEmailOTP({ email });
   };
 
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogTrigger>Open</AlertDialogTrigger>
-
       <AlertDialogContent className="shad-alert-dialog">
         <AlertDialogHeader className="relative flex justify-center">
           <AlertDialogTitle className="h2 text-center">
-            Enter your OTP
+            Enter Your OTP
             <Image
-              src="/close.png"
+              src="/remove.svg"
               alt="close"
               width={20}
               height={20}
@@ -71,22 +71,20 @@ const OTPModal = ({ accountId, email }: OTPModalProps) => {
               className="otp-close-button"
             />
           </AlertDialogTitle>
-
           <AlertDialogDescription className="subtitle-2 text-center text-light-100">
-            We&apos;ve sent a code to
+            We&apos;ve sent a code to{" "}
             <span className="pl-1 text-brand">{email}</span>
           </AlertDialogDescription>
         </AlertDialogHeader>
 
-        <InputOTP maxLength={6} value={otp} onChange={setOtp}>
+        <InputOTP maxLength={6} value={password} onChange={setPassword}>
           <InputOTPGroup className="shad-otp">
-            {[...Array(6)].map((_, index) => (
-              <InputOTPSlot
-                key={index}
-                index={index}
-                className="shad-otp-slot"
-              />
-            ))}
+            <InputOTPSlot index={0} className="shad-otp-slot" />
+            <InputOTPSlot index={1} className="shad-otp-slot" />
+            <InputOTPSlot index={2} className="shad-otp-slot" />
+            <InputOTPSlot index={3} className="shad-otp-slot" />
+            <InputOTPSlot index={4} className="shad-otp-slot" />
+            <InputOTPSlot index={5} className="shad-otp-slot" />
           </InputOTPGroup>
         </InputOTP>
 
@@ -115,9 +113,9 @@ const OTPModal = ({ accountId, email }: OTPModalProps) => {
                 type="button"
                 variant="link"
                 className="pl-1 text-brand"
-                onClick={handleResendOTP}
+                onClick={handleResendOtp}
               >
-                Click to Resend
+                Click to resend
               </Button>
             </div>
           </div>
@@ -127,4 +125,4 @@ const OTPModal = ({ accountId, email }: OTPModalProps) => {
   );
 };
 
-export default OTPModal;
+export default OtpModal;

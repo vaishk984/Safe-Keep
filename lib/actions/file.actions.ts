@@ -15,12 +15,12 @@ import {
   UpdateFileUsersProps,
   UploadFileProps,
 } from "@/type";
+import { redirect } from "next/navigation";
 
 const handleError = (error: unknown, message: string) => {
-  console.error(`${message}\n`, error);
-  throw new Error(message);
+  console.log(error, message);
+  throw error;
 };
-
 
 export const uploadFile = async ({
   file,
@@ -39,12 +39,11 @@ export const uploadFile = async ({
       inputFile
     );
 
-    const { type, extension } = getFileType(bucketFile.name);
     const fileDocument = {
-      type,
+      type: getFileType(bucketFile.name).type,
       name: bucketFile.name,
       url: constructFileUrl(bucketFile.$id),
-      extension,
+      extension: getFileType(bucketFile.name).extension,
       size: bucketFile.sizeOriginal,
       owner: ownerId,
       accountId,
@@ -55,7 +54,7 @@ export const uploadFile = async ({
     const newFile = await databases
       .createDocument(
         appwriteConfig.databaseId,
-        appwriteConfig.usersFilesCollectionId,
+        appwriteConfig.filesCollectionId,
         ID.unique(),
         fileDocument
       )
@@ -67,7 +66,7 @@ export const uploadFile = async ({
     revalidatePath(path);
     return parseStringify(newFile);
   } catch (error) {
-    handleError(error, "Failed to update file users");
+    handleError(error, "Failed to upload file");
   }
 };
 
@@ -105,32 +104,30 @@ export const getFiles = async ({
   searchText = "",
   sort = "$createdAt-desc",
   limit,
-  offset = 0,
-}: GetFilesProps & { offset?: number }) => {
+}: GetFilesProps) => {
   const { databases } = await createAdminClient();
 
-  try {
-    const currentUser = await getCurrentUser();
-    if (!currentUser) throw new Error("User not found");
+  // ❌ DON'T wrap this in try/catch
+  const currentUser = await getCurrentUser(); // will auto-redirect if no session
 
+  // ✅ This check is now redundant but kept for safety
+  if (!currentUser) redirect("/login");
+
+  try {
     const queries = createQueries(currentUser, types, searchText, sort, limit);
-    if (offset) queries.push(Query.offset(offset));
 
     const files = await databases.listDocuments(
       appwriteConfig.databaseId,
-      appwriteConfig.usersFilesCollectionId,
+      appwriteConfig.filesCollectionId,
       queries
     );
 
-    return {
-      documents: files.documents as Models.Document[],
-      total: files.total ?? files.documents.length,
-    };
+    console.log({ files });
+    return parseStringify(files);
   } catch (error) {
-    handleError(error, `Failed to get files for user`);
+    handleError(error, "Failed to get files");
   }
 };
-
 
 export const renameFile = async ({
   fileId,
@@ -144,7 +141,7 @@ export const renameFile = async ({
     const newName = `${name}.${extension}`;
     const updatedFile = await databases.updateDocument(
       appwriteConfig.databaseId,
-      appwriteConfig.usersFilesCollectionId,
+      appwriteConfig.filesCollectionId,
       fileId,
       {
         name: newName,
@@ -168,7 +165,7 @@ export const updateFileUsers = async ({
   try {
     const updatedFile = await databases.updateDocument(
       appwriteConfig.databaseId,
-      appwriteConfig.usersFilesCollectionId,
+      appwriteConfig.filesCollectionId,
       fileId,
       {
         users: emails,
@@ -192,7 +189,7 @@ export const deleteFile = async ({
   try {
     const deletedFile = await databases.deleteDocument(
       appwriteConfig.databaseId,
-      appwriteConfig.usersFilesCollectionId,
+      appwriteConfig.filesCollectionId,
       fileId
     );
 
@@ -207,6 +204,7 @@ export const deleteFile = async ({
   }
 };
 
+// ============================== TOTAL FILE SPACE USED
 export async function getTotalSpaceUsed() {
   try {
     const { databases } = await createSessionClient();
@@ -215,7 +213,7 @@ export async function getTotalSpaceUsed() {
 
     const files = await databases.listDocuments(
       appwriteConfig.databaseId,
-      appwriteConfig.usersFilesCollectionId,
+      appwriteConfig.filesCollectionId,
       [Query.equal("owner", [currentUser.$id])]
     );
 

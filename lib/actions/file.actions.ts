@@ -15,7 +15,6 @@ import {
   UpdateFileUsersProps,
   UploadFileProps,
 } from "@/type";
-import { redirect } from "next/navigation";
 
 const handleError = (error: unknown, message: string) => {
   console.log(error, message);
@@ -107,11 +106,9 @@ export const getFiles = async ({
 }: GetFilesProps) => {
   const { databases } = await createAdminClient();
 
-  // ❌ DON'T wrap this in try/catch
-  const currentUser = await getCurrentUser(); // will auto-redirect if no session
+  const currentUser = await getCurrentUser();
 
-  // ✅ This check is now redundant but kept for safety
-  if (!currentUser) redirect("/login");
+  if (!currentUser) throw new Error("User not found");
 
   try {
     const queries = createQueries(currentUser, types, searchText, sort, limit);

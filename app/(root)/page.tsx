@@ -25,7 +25,6 @@ const Dashboard = async () => {
       <section>
         <Chart used={totalSpace.used} />
 
-        {/* Uploaded file type summaries */}
         <ul className="dashboard-summary-list">
           {usageSummary.map((summary) => (
             <Link
@@ -59,7 +58,6 @@ const Dashboard = async () => {
         </ul>
       </section>
 
-      {/* Recent files uploaded */}
       <section className="dashboard-recent-files">
         <h2 className="h3 xl:h2 text-light-100">Recent files uploaded</h2>
         {files.documents.length > 0 ? (
@@ -77,15 +75,18 @@ const Dashboard = async () => {
                   url={file.url}
                 />
 
-                <div className="recent-file-details">
-                  <div className="flex flex-col gap-1">
-                    <p className="recent-file-name">{file.name}</p>
-                    <FormattedDateTime
-                      date={file.$createdAt}
-                      className="caption"
-                    />
+                <div className="flex flex-col flex-1">
+                  <div className="flex items-start justify-between flex-wrap sm:flex-nowrap gap-1">
+                    <div>
+                      <p className="recent-file-name">{file.name}</p>
+                      <FormattedDateTime
+                        date={file.$createdAt}
+                        className="caption"
+                      />
+                    </div>
+
+                    <ActionDropdown file={file} />
                   </div>
-                  <ActionDropdown file={file} />
                 </div>
               </Link>
             ))}

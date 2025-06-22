@@ -6,10 +6,10 @@ const layout = ({ children }: { children: React.ReactNode }) => {
       <section className="hidden w-1/2 items-center justify-center bg-brand p-10 lg:flex xl:w-2/5">
         <div className="flex max-h-[800px] max-w-[430px] flex-col justify-center space-y-14">
           <Image
-            src="/logo.png"
+            src="/logo-mobile.png"
             alt="logo"
-            width={250}
-            height={102}
+            width={300}
+            height={150}
             className="h-auto"
           />
 
@@ -26,7 +26,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
 
       <section className="flex flex-1 flex-col items-center justify-center bg-white p-10 lg:py-0">
         <div className="mb-16 lg:hidden">
-          <Image src="/logo.png" alt = "logo" width={224} height={82} className="h-auto w-[200px] lg:w-[250px]" />
+          <Image src="/logo-mobile.png" alt = "logo" width={300} height={100} className="h-auto w-[200px] lg:w-[250px]" />
         </div>
         {children}
       </section>

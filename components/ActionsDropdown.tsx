@@ -115,9 +115,15 @@ const ActionDropdown = ({ file }: { file: Models.Document }) => {
           )}
 
           {value === "delete" && (
-            <p className="delete-confirmation">
-              Are you sure you want to delete{` `}
-              <span className="delete-file-name">{file.name}</span>?
+            <p className="delete-confirmation text-center">
+              Are you sure you want to delete{" "}
+              <span
+                className="delete-file-name inline-block max-w-[240px] truncate align-middle"
+                title={file.name}
+              >
+                {file.name}
+              </span>
+              ?
             </p>
           )}
         </DialogHeader>

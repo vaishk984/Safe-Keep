@@ -8,7 +8,6 @@ import { convertFileSize, formatDateTime } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
 
-// ✅ Thumbnail + Basic Info
 const ImageThumbnail = ({ file }: { file: Models.Document }) => (
   <div className="file-details-thumbnail">
     <Thumbnail type={file.type} extension={file.extension} url={file.url} />
@@ -19,7 +18,6 @@ const ImageThumbnail = ({ file }: { file: Models.Document }) => (
   </div>
 );
 
-// ✅ Reusable Row
 const DetailRow = ({ label, value }: { label: string; value: string }) => (
   <div className="flex">
     <p className="file-details-label text-left">{label}</p>
@@ -27,7 +25,6 @@ const DetailRow = ({ label, value }: { label: string; value: string }) => (
   </div>
 );
 
-// ✅ File Detail Section
 export const FileDetails = ({ file }: { file: Models.Document }) => {
   return (
     <>
@@ -42,7 +39,6 @@ export const FileDetails = ({ file }: { file: Models.Document }) => {
   );
 };
 
-// ✅ Share Input + User List
 interface Props {
   file: Models.Document;
   onInputChange: React.Dispatch<React.SetStateAction<string[]>>;

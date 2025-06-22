@@ -74,7 +74,7 @@ const MobileNavigation = ({
                 <p className="caption">{email}</p>
               </div>
             </div>
-            <Separator className="mb-4 bg-ligt-200/20" />
+            <Separator className="mb-4 bg-light-200/20" />
           </SheetTitle>
 
           <nav className="mobile-nav">

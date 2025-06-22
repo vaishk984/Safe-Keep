@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { FileType } from "@/type";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -183,8 +184,20 @@ export const constructDownloadUrl = (bucketFileId: string) => {
   return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_BUCKET}/files/${bucketFileId}/download?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT}`;
 };
 
-// DASHBOARD UTILS
-export const getUsageSummary = (totalSpace: any) => {
+type UsageItem = {
+  size: number
+  latestDate: string
+}
+
+type TotalSpace = {
+  document: UsageItem
+  image: UsageItem
+  audio: UsageItem
+  video: UsageItem
+  other: UsageItem
+}
+
+export const getUsageSummary = (totalSpace: TotalSpace) => {
   return [
     {
       title: "Documents",

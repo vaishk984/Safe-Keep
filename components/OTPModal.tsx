@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -74,7 +73,7 @@ const OTPModal = ({ accountId, email }: OTPModalProps) => {
           </AlertDialogTitle>
 
           <AlertDialogDescription className="subtitle-2 text-center text-light-100">
-            We've sent a code to
+            We&apos;ve sent a code to
             <span className="pl-1 text-brand">{email}</span>
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -111,7 +110,7 @@ const OTPModal = ({ accountId, email }: OTPModalProps) => {
             </AlertDialogAction>
 
             <div className="subtitle-2 mt-2 text-center text-light-100">
-              Didn't get a code?
+              Didn&apos;t get a code?
               <Button
                 type="button"
                 variant="link"

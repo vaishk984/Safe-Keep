@@ -33,12 +33,18 @@ const Search = () => {
       }
 
       const files = await getFiles({ types: [], searchText: debouncedQuery });
+      if (!files || !files.documents) {
+        setResults([]);
+        return;
+      }
+
       setResults(files.documents);
+
       setOpen(true);
     };
 
     fetchFiles();
-  }, [debouncedQuery]);
+  }, [debouncedQuery, pathname, router]);
 
   useEffect(() => {
     if (!searchQuery) setQuery("");

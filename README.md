@@ -43,8 +43,8 @@
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/safekeep.git
-cd safekeep
+git clone https://github.com/vaishk984/Safe-Keep.git
+cd Safe-Keep
 ```
 
 ### 2. Install dependencies
